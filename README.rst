@@ -47,7 +47,7 @@ commands. For example::
 
   import sievelib
 
-  def MyCommand(sievelib.commands.ActionCommand):
+  class MyCommand(sievelib.commands.ActionCommand):
       args_definition = [
           {"name": "testtag",
               "type": ["tag"],
@@ -110,6 +110,27 @@ make the generation of Sieve rules easier::
   >>> 
 
 Additional documentation is available within source code.
+
+Vaccation filters creation
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Example to create a vacation filter::
+
+  >>> from sievelib.factory import FiltersSet
+  >>> fs = FiltersSet("MyVaccation")
+  >>> fs.addfilter("rule1",
+  ...              [("true","is",""),],
+  ...              [('vacation', "Out of Office Reply (Subject)","7", ['address1@example.com','address2@example.com'],"I'm out for holiday unit 10th of may 2017")],
+  ...              "true")
+  >>> fs.tosieve()
+  require ["fileinto"];
+  
+  # Filter: rule1
+  if true {
+      vacation :subject "Out of Office Reply (Subject)" :days 7 :addresses [ "address1@example.com" , "address2@example.com" ] "I'm out for holiday unit 10th of may 2017";
+  }
+  >>> 
+
 
 ManageSieve tools
 -----------------
