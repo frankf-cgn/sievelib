@@ -27,7 +27,6 @@ from collections import Iterable
 import sys
 
 from future.utils import python_2_unicode_compatible
-import six
 
 
 @python_2_unicode_compatible
@@ -158,8 +157,6 @@ class Command(object):
                     continue
 
                 if "string" in arg["type"]:
-                    if isinstance(value, six.binary_type):
-                        value = value.decode("utf-8")
                     target.write(value)
                     if not value.startswith('"'):
                         target.write("\n")
@@ -610,6 +607,7 @@ class SizeCommand(TestCommand):
 
 
 class VacationCommand(ActionCommand):
+    is_extension = True
     args_definition = [
         {"name": "subject",
          "type": ["tag"],
@@ -650,7 +648,6 @@ class VacationCommand(ActionCommand):
          "type": ["string"],
          "required": True},
     ]
-
 
 class SetCommand(ControlCommand):
 
