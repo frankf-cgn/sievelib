@@ -199,8 +199,17 @@ class FiltersSet(object):
             action = get_command_instance(actdef[0], ifcontrol, False)
             if action.is_extension:
                 self.require(actdef[0])
-            for arg in actdef[1:]:
-                action.check_next_arg("string", self.__quote_if_necessary(arg))
+            if actdef[0] == 'vacation':
+                action.check_next_arg("tag", ":subject")
+                action.check_next_arg("string", self.__quote_if_necessary(actdef[1]))
+                action.check_next_arg("tag", ":days")
+                action.check_next_arg("number", actdef[2])
+                action.check_next_arg("tag", ":addresses")
+                action.check_next_arg("stringlist", "[ {0} ]".format(' , '.join('"{0}"'.format(adr) for adr in actdef[3])))
+                action.check_next_arg("string", self.__quote_if_necessary(actdef[4]))
+            else:
+              for arg in actdef[1:]:
+                  action.check_next_arg("string", self.__quote_if_necessary(arg))
             ifcontrol.addchild(action)
         return ifcontrol
 
