@@ -111,7 +111,7 @@ make the generation of Sieve rules easier::
 
 Additional documentation is available within source code.
 
-Vaccation filters creation
+Vacation filters creation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Example to create a vacation filter::
@@ -123,7 +123,7 @@ Example to create a vacation filter::
   ...              [('vacation', "Out of Office Reply (Subject)","7", ['address1@example.com','address2@example.com'],"I'm out for holiday unit 10th of may 2017")],
   ...              "true")
   >>> fs.tosieve()
-  require ["fileinto"];
+  require ["vacation"];
   
   # Filter: rule1
   if true {
