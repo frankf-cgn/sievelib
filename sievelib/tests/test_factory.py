@@ -60,6 +60,24 @@ if anyof (exists ["list-help","list-unsubscribe","list-subscribe","list-owner"])
 }
 """)
 
+    def test_add_vacation_filter(self):
+        output = six.StringIO()
+        self.fs.addfilter(
+            "rule1",
+            [("true","is",""),],
+            [('vacation', "Out of Office Reply (Subject)","7", ['address1@example.com','address2@example.com'],"I'm out for holiday unit 10th of may 2017")],
+            "true")
+
+        self.assertIsNot(self.fs.getfilter("rule1"), None)
+        self.fs.tosieve(output)
+        self.assertEqual(output.getvalue(), """require ["vacation"];
+
+# Filter: rule1
+if true {
+    vacation :subject "Out of Office Reply (Subject)" :days 7 :addresses [ "address1@example.com" , "address2@example.com" ] "I'm out for holiday unit 10th of may 2017";
+}
+""")
+
     def test_add_exists_filter_with_not(self):
         output = six.StringIO()
         self.fs.addfilter(
